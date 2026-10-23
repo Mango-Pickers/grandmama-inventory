@@ -9,50 +9,309 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as IndexRouteImport } from './routes/index'
+import { Route as ErpRouteImport } from './routes/_erp'
+import { Route as ErpIndexRouteImport } from './routes/_erp.index'
+import { Route as ErpCsvImportExportRouteImport } from './routes/_erp.csv-import-export'
+import { Route as ErpDailyStockRouteImport } from './routes/_erp.daily-stock'
+import { Route as ErpInventoryRouteImport } from './routes/_erp.inventory'
+import { Route as ErpIssueStockRouteImport } from './routes/_erp.issue-stock'
+import { Route as ErpNotificationsRouteImport } from './routes/_erp.notifications'
+import { Route as ErpPhysicalCountRouteImport } from './routes/_erp.physical-count'
+import { Route as ErpQualityChecksRouteImport } from './routes/_erp.quality-checks'
+import { Route as ErpReceiveStockRouteImport } from './routes/_erp.receive-stock'
+import { Route as ErpSettingsRouteImport } from './routes/_erp.settings'
+import { Route as ErpStockActivityRouteImport } from './routes/_erp.stock-activity'
+import { Route as ErpStockPreparationRouteImport } from './routes/_erp.stock-preparation'
 
-const IndexRoute = IndexRouteImport.update({
+const ErpRoute = ErpRouteImport.update({
+  id: '/_erp',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ErpIndexRoute = ErpIndexRouteImport.update({
   id: '/',
   path: '/',
-  getParentRoute: () => rootRouteImport,
+  getParentRoute: () => ErpRoute,
+} as any)
+const ErpCsvImportExportRoute = ErpCsvImportExportRouteImport.update({
+  id: '/csv-import-export',
+  path: '/csv-import-export',
+  getParentRoute: () => ErpRoute,
+} as any)
+const ErpDailyStockRoute = ErpDailyStockRouteImport.update({
+  id: '/daily-stock',
+  path: '/daily-stock',
+  getParentRoute: () => ErpRoute,
+} as any)
+const ErpInventoryRoute = ErpInventoryRouteImport.update({
+  id: '/inventory',
+  path: '/inventory',
+  getParentRoute: () => ErpRoute,
+} as any)
+const ErpIssueStockRoute = ErpIssueStockRouteImport.update({
+  id: '/issue-stock',
+  path: '/issue-stock',
+  getParentRoute: () => ErpRoute,
+} as any)
+const ErpNotificationsRoute = ErpNotificationsRouteImport.update({
+  id: '/notifications',
+  path: '/notifications',
+  getParentRoute: () => ErpRoute,
+} as any)
+const ErpPhysicalCountRoute = ErpPhysicalCountRouteImport.update({
+  id: '/physical-count',
+  path: '/physical-count',
+  getParentRoute: () => ErpRoute,
+} as any)
+const ErpQualityChecksRoute = ErpQualityChecksRouteImport.update({
+  id: '/quality-checks',
+  path: '/quality-checks',
+  getParentRoute: () => ErpRoute,
+} as any)
+const ErpReceiveStockRoute = ErpReceiveStockRouteImport.update({
+  id: '/receive-stock',
+  path: '/receive-stock',
+  getParentRoute: () => ErpRoute,
+} as any)
+const ErpSettingsRoute = ErpSettingsRouteImport.update({
+  id: '/settings',
+  path: '/settings',
+  getParentRoute: () => ErpRoute,
+} as any)
+const ErpStockActivityRoute = ErpStockActivityRouteImport.update({
+  id: '/stock-activity',
+  path: '/stock-activity',
+  getParentRoute: () => ErpRoute,
+} as any)
+const ErpStockPreparationRoute = ErpStockPreparationRouteImport.update({
+  id: '/stock-preparation',
+  path: '/stock-preparation',
+  getParentRoute: () => ErpRoute,
 } as any)
 
 export interface FileRoutesByFullPath {
-  '/': typeof IndexRoute
+  '/': typeof ErpIndexRoute
+  '/csv-import-export': typeof ErpCsvImportExportRoute
+  '/daily-stock': typeof ErpDailyStockRoute
+  '/inventory': typeof ErpInventoryRoute
+  '/issue-stock': typeof ErpIssueStockRoute
+  '/notifications': typeof ErpNotificationsRoute
+  '/physical-count': typeof ErpPhysicalCountRoute
+  '/quality-checks': typeof ErpQualityChecksRoute
+  '/receive-stock': typeof ErpReceiveStockRoute
+  '/settings': typeof ErpSettingsRoute
+  '/stock-activity': typeof ErpStockActivityRoute
+  '/stock-preparation': typeof ErpStockPreparationRoute
 }
 export interface FileRoutesByTo {
-  '/': typeof IndexRoute
+  '/csv-import-export': typeof ErpCsvImportExportRoute
+  '/daily-stock': typeof ErpDailyStockRoute
+  '/inventory': typeof ErpInventoryRoute
+  '/issue-stock': typeof ErpIssueStockRoute
+  '/notifications': typeof ErpNotificationsRoute
+  '/physical-count': typeof ErpPhysicalCountRoute
+  '/quality-checks': typeof ErpQualityChecksRoute
+  '/receive-stock': typeof ErpReceiveStockRoute
+  '/settings': typeof ErpSettingsRoute
+  '/stock-activity': typeof ErpStockActivityRoute
+  '/stock-preparation': typeof ErpStockPreparationRoute
+  '/': typeof ErpIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
-  '/': typeof IndexRoute
+  '/_erp': typeof ErpRouteWithChildren
+  '/_erp/csv-import-export': typeof ErpCsvImportExportRoute
+  '/_erp/daily-stock': typeof ErpDailyStockRoute
+  '/_erp/inventory': typeof ErpInventoryRoute
+  '/_erp/issue-stock': typeof ErpIssueStockRoute
+  '/_erp/notifications': typeof ErpNotificationsRoute
+  '/_erp/physical-count': typeof ErpPhysicalCountRoute
+  '/_erp/quality-checks': typeof ErpQualityChecksRoute
+  '/_erp/receive-stock': typeof ErpReceiveStockRoute
+  '/_erp/settings': typeof ErpSettingsRoute
+  '/_erp/stock-activity': typeof ErpStockActivityRoute
+  '/_erp/stock-preparation': typeof ErpStockPreparationRoute
+  '/_erp/': typeof ErpIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/csv-import-export'
+    | '/daily-stock'
+    | '/inventory'
+    | '/issue-stock'
+    | '/notifications'
+    | '/physical-count'
+    | '/quality-checks'
+    | '/receive-stock'
+    | '/settings'
+    | '/stock-activity'
+    | '/stock-preparation'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/csv-import-export'
+    | '/daily-stock'
+    | '/inventory'
+    | '/issue-stock'
+    | '/notifications'
+    | '/physical-count'
+    | '/quality-checks'
+    | '/receive-stock'
+    | '/settings'
+    | '/stock-activity'
+    | '/stock-preparation'
+    | '/'
+  id:
+    | '__root__'
+    | '/_erp'
+    | '/_erp/csv-import-export'
+    | '/_erp/daily-stock'
+    | '/_erp/inventory'
+    | '/_erp/issue-stock'
+    | '/_erp/notifications'
+    | '/_erp/physical-count'
+    | '/_erp/quality-checks'
+    | '/_erp/receive-stock'
+    | '/_erp/settings'
+    | '/_erp/stock-activity'
+    | '/_erp/stock-preparation'
+    | '/_erp/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
-  IndexRoute: typeof IndexRoute
+  ErpRoute: typeof ErpRouteWithChildren
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/': {
-      id: '/'
+    '/_erp': {
+      id: '/_erp'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof ErpRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_erp/': {
+      id: '/_erp/'
       path: '/'
       fullPath: '/'
-      preLoaderRoute: typeof IndexRouteImport
-      parentRoute: typeof rootRouteImport
+      preLoaderRoute: typeof ErpIndexRouteImport
+      parentRoute: typeof ErpRoute
+    }
+    '/_erp/csv-import-export': {
+      id: '/_erp/csv-import-export'
+      path: '/csv-import-export'
+      fullPath: '/csv-import-export'
+      preLoaderRoute: typeof ErpCsvImportExportRouteImport
+      parentRoute: typeof ErpRoute
+    }
+    '/_erp/daily-stock': {
+      id: '/_erp/daily-stock'
+      path: '/daily-stock'
+      fullPath: '/daily-stock'
+      preLoaderRoute: typeof ErpDailyStockRouteImport
+      parentRoute: typeof ErpRoute
+    }
+    '/_erp/inventory': {
+      id: '/_erp/inventory'
+      path: '/inventory'
+      fullPath: '/inventory'
+      preLoaderRoute: typeof ErpInventoryRouteImport
+      parentRoute: typeof ErpRoute
+    }
+    '/_erp/issue-stock': {
+      id: '/_erp/issue-stock'
+      path: '/issue-stock'
+      fullPath: '/issue-stock'
+      preLoaderRoute: typeof ErpIssueStockRouteImport
+      parentRoute: typeof ErpRoute
+    }
+    '/_erp/notifications': {
+      id: '/_erp/notifications'
+      path: '/notifications'
+      fullPath: '/notifications'
+      preLoaderRoute: typeof ErpNotificationsRouteImport
+      parentRoute: typeof ErpRoute
+    }
+    '/_erp/physical-count': {
+      id: '/_erp/physical-count'
+      path: '/physical-count'
+      fullPath: '/physical-count'
+      preLoaderRoute: typeof ErpPhysicalCountRouteImport
+      parentRoute: typeof ErpRoute
+    }
+    '/_erp/quality-checks': {
+      id: '/_erp/quality-checks'
+      path: '/quality-checks'
+      fullPath: '/quality-checks'
+      preLoaderRoute: typeof ErpQualityChecksRouteImport
+      parentRoute: typeof ErpRoute
+    }
+    '/_erp/receive-stock': {
+      id: '/_erp/receive-stock'
+      path: '/receive-stock'
+      fullPath: '/receive-stock'
+      preLoaderRoute: typeof ErpReceiveStockRouteImport
+      parentRoute: typeof ErpRoute
+    }
+    '/_erp/settings': {
+      id: '/_erp/settings'
+      path: '/settings'
+      fullPath: '/settings'
+      preLoaderRoute: typeof ErpSettingsRouteImport
+      parentRoute: typeof ErpRoute
+    }
+    '/_erp/stock-activity': {
+      id: '/_erp/stock-activity'
+      path: '/stock-activity'
+      fullPath: '/stock-activity'
+      preLoaderRoute: typeof ErpStockActivityRouteImport
+      parentRoute: typeof ErpRoute
+    }
+    '/_erp/stock-preparation': {
+      id: '/_erp/stock-preparation'
+      path: '/stock-preparation'
+      fullPath: '/stock-preparation'
+      preLoaderRoute: typeof ErpStockPreparationRouteImport
+      parentRoute: typeof ErpRoute
     }
   }
 }
 
+interface ErpRouteChildren {
+  ErpCsvImportExportRoute: typeof ErpCsvImportExportRoute
+  ErpDailyStockRoute: typeof ErpDailyStockRoute
+  ErpInventoryRoute: typeof ErpInventoryRoute
+  ErpIssueStockRoute: typeof ErpIssueStockRoute
+  ErpNotificationsRoute: typeof ErpNotificationsRoute
+  ErpPhysicalCountRoute: typeof ErpPhysicalCountRoute
+  ErpQualityChecksRoute: typeof ErpQualityChecksRoute
+  ErpReceiveStockRoute: typeof ErpReceiveStockRoute
+  ErpSettingsRoute: typeof ErpSettingsRoute
+  ErpStockActivityRoute: typeof ErpStockActivityRoute
+  ErpStockPreparationRoute: typeof ErpStockPreparationRoute
+  ErpIndexRoute: typeof ErpIndexRoute
+}
+
+const ErpRouteChildren: ErpRouteChildren = {
+  ErpCsvImportExportRoute: ErpCsvImportExportRoute,
+  ErpDailyStockRoute: ErpDailyStockRoute,
+  ErpInventoryRoute: ErpInventoryRoute,
+  ErpIssueStockRoute: ErpIssueStockRoute,
+  ErpNotificationsRoute: ErpNotificationsRoute,
+  ErpPhysicalCountRoute: ErpPhysicalCountRoute,
+  ErpQualityChecksRoute: ErpQualityChecksRoute,
+  ErpReceiveStockRoute: ErpReceiveStockRoute,
+  ErpSettingsRoute: ErpSettingsRoute,
+  ErpStockActivityRoute: ErpStockActivityRoute,
+  ErpStockPreparationRoute: ErpStockPreparationRoute,
+  ErpIndexRoute: ErpIndexRoute,
+}
+
+const ErpRouteWithChildren = ErpRoute._addFileChildren(ErpRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
-  IndexRoute: IndexRoute,
+  ErpRoute: ErpRouteWithChildren,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
