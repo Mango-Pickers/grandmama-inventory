@@ -1,14 +1,23 @@
-# Welcome to your Lovable project
+# Grandmama Inventory
+
+Build this app using the HTML files referenced below. You can hotlink the images referenced in the HTML. The attached images are screenshots of the desired screens. Here are public links to the html of the screens which you should read and use to build the app:
+
+1. https://contribution.usercontent.google.com/download?c=CgthaWRhX2NvZGVmeBJ7Eh1hcHBfY29tcGFuaW9uX2dlbmVyYXRlZF9maWxlcxpaCiVodG1sXzAwMDY1ZTg1YmU4M2Y5Y2YwNWYxMjhjMWQ0MmQ2MmE2EgsSBxCLpsCNihcYAZIBIwoKcHJvamVjdF9pZBIVQhM3ODA1MjIyNzQ1NzI5NTI2ODM3&filename=&opi=89354086
+2. https://contribution.usercontent.google.com/download?c=CgthaWRhX2NvZGVmeBJ7Eh1hcHBfY29tcGFuaW9uX2dlbmVyYXRlZF9maWxlcxpaCiVodG1sXzAwMDY1ZTg1YmVhYzIzMzcwNDRmNDZiMGVlMTE3ZmFhEgsSBxCLpsCNihcYAZIBIwoKcHJvamVjdF9pZBIVQhM3ODA1MjIyNzQ1NzI5NTI2ODM3&filename=&opi=89354086
+
+lets build this and make it mobile and tab responsive.
 
 This project was built with [Lovable](https://lovable.dev).
 
+**Live app**: https://grandmama-inventory.lovable.app
+
 ## Build with Lovable
 
-Open your project in the [Lovable editor](https://lovable.dev) and keep building.
+Continue developing this project in the [Lovable editor](https://lovable.dev/projects/d7280ce2-fb31-476a-a535-243977ee7842).
 
 - **Ship faster**: describe what you want to build and Lovable handles the code.
-- **Stay in sync**: connect the project to GitHub and every change made in Lovable is committed straight to your repository.
-- **Full ownership**: this code is yours. Push to your repository and your changes sync back into Lovable, ready for your next prompt.
+- **Stay in sync**: every change made in Lovable is committed straight to this repository.
+- **Full ownership**: this code is yours. Push to `main` on GitHub and your changes sync back into Lovable, ready for your next prompt.
 
 ## Development
 
@@ -20,10 +29,3 @@ cd <repository-name>
 npm i
 npm run dev
 ```
-
-## Built with
-
-- TanStack Start
-- TypeScript
-- React
-- Tailwind CSS
