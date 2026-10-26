@@ -12,6 +12,7 @@ import { useEffect, type ReactNode } from "react";
 
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
+import { AuthProvider } from "../components/auth/auth-provider";
 
 function NotFoundComponent() {
   return (
@@ -131,10 +132,27 @@ function RootShell({ children }: { children: ReactNode }) {
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
 
+  useEffect(() => {
+    void import("../lib/firebase")
+      .then(async ({ firebaseConfigError, getFirebaseAnalytics }) => {
+        if (firebaseConfigError) {
+          console.warn(firebaseConfigError);
+          return;
+        }
+
+        await getFirebaseAnalytics();
+      })
+      .catch((error: unknown) => {
+        console.error("Firebase initialization failed.", error);
+      });
+  }, []);
+
   return (
     <QueryClientProvider client={queryClient}>
-      {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
-      <Outlet />
+      <AuthProvider>
+        {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
+        <Outlet />
+      </AuthProvider>
     </QueryClientProvider>
   );
 }

@@ -144,6 +144,12 @@
 }
 
 @layer base {
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
+
   html,
   body {
     margin: 0;
@@ -161,10 +167,6 @@
     font-family: var(--font-body-md);
     font-size: var(--text-body-md);
     line-height: var(--text-body-md--line-height);
-  }
-
-  ::-webkit-scrollbar {
-    display: none;
   }
 
   .material-symbols-outlined {

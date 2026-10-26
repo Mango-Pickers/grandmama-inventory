@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 
-import { ModulePlaceholder } from "@/components/erp/module-placeholder";
+import { SettingsPage } from "@/components/erp/settings-page";
 
 export const Route = createFileRoute("/_erp/settings")({
   head: () => ({
@@ -19,12 +19,5 @@ export const Route = createFileRoute("/_erp/settings")({
       { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
-  component: () => (
-    <ModulePlaceholder
-      icon="settings"
-      kicker="Operations Core"
-      title="Settings"
-      description="Storage units, staff roles, unit rules and sync preferences for the ERP."
-    />
-  ),
+  component: SettingsPage,
 });

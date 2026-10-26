@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 
-import { ModulePlaceholder } from "@/components/erp/module-placeholder";
+import { NotificationsPage } from "@/components/erp/notifications-page";
 
 export const Route = createFileRoute("/_erp/notifications")({
   head: () => ({
@@ -19,12 +19,5 @@ export const Route = createFileRoute("/_erp/notifications")({
       { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
-  component: () => (
-    <ModulePlaceholder
-      icon="notifications"
-      kicker="Operations Core"
-      title="Notifications"
-      description="Reorder alerts, QA deadlines and ledger sync notifications for the ops team."
-    />
-  ),
+  component: NotificationsPage,
 });

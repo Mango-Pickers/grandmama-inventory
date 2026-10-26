@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 
-import { ModulePlaceholder } from "@/components/erp/module-placeholder";
+import { QualityChecksPage } from "@/components/erp/quality-checks-page";
 
 export const Route = createFileRoute("/_erp/quality-checks")({
   head: () => ({
@@ -19,12 +19,5 @@ export const Route = createFileRoute("/_erp/quality-checks")({
       { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
-  component: () => (
-    <ModulePlaceholder
-      icon="verified"
-      kicker="Operations Core"
-      title="Quality Checks"
-      description="Sensory, temperature and freshness inspections due within 24 hours."
-    />
-  ),
+  component: QualityChecksPage,
 });

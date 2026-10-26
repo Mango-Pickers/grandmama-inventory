@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 
-import { ModulePlaceholder } from "@/components/erp/module-placeholder";
+import { StockActivityPage } from "@/components/erp/stock-activity-page";
 
 export const Route = createFileRoute("/_erp/stock-activity")({
   head: () => ({
@@ -19,12 +19,5 @@ export const Route = createFileRoute("/_erp/stock-activity")({
       { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
-  component: () => (
-    <ModulePlaceholder
-      icon="timeline"
-      kicker="Operations Core"
-      title="Stock Activity"
-      description="Complete transaction ledger of every intake, issue, prep and discard event."
-    />
-  ),
+  component: StockActivityPage,
 });

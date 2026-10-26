@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 
-import { ModulePlaceholder } from "@/components/erp/module-placeholder";
+import { StockWorkflowPage } from "@/components/erp/stock-workflow-page";
 
 export const Route = createFileRoute("/_erp/receive-stock")({
   head: () => ({
@@ -19,12 +19,5 @@ export const Route = createFileRoute("/_erp/receive-stock")({
       { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
-  component: () => (
-    <ModulePlaceholder
-      icon="move_to_inbox"
-      kicker="Operations Core"
-      title="Receive Stock"
-      description="Log incoming vendor deliveries against purchase orders and supplier batch registries."
-    />
-  ),
+  component: () => <StockWorkflowPage workflow="receipt" />,
 });

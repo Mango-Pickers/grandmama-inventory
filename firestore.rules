@@ -1,0 +1,249 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function signedIn() {
+      return request.auth != null;
+    }
+
+    function isApprovedUser() {
+      return signedIn() && request.auth.token.email in [
+        'inventory@mygrandmama.com',
+        'manager@mygrandmama.com',
+        'admin@mygrandmama.com',
+        'supervisor@mygrandmama.com'
+      ];
+    }
+
+    function canOperateInventory() {
+      return isApprovedUser();
+    }
+
+    function canManageCatalog() {
+      return isApprovedUser();
+    }
+
+    function canApprove() {
+      return isApprovedUser();
+    }
+
+    match /users/{userId} {
+      allow read: if signedIn()
+        && (request.auth.uid == userId || isApprovedUser());
+      allow create, update, delete: if false;
+    }
+
+    match /inventoryItems/{itemId} {
+      allow read: if canOperateInventory();
+      allow create, update: if canManageCatalog()
+        && request.resource.data.keys().hasOnly([
+          'id', 'name', 'category', 'status', 'processingEnabled',
+          'confirmationStatus', 'sourceLabel', 'confirmationNote',
+          'notes', 'createdAt', 'createdBy', 'updatedAt', 'updatedBy'
+        ])
+        && request.resource.data.keys().hasAll([
+          'id', 'name', 'category', 'status', 'processingEnabled',
+          'confirmationStatus', 'sourceLabel', 'confirmationNote',
+          'updatedAt', 'updatedBy'
+        ])
+        && request.resource.data.id == itemId
+        && request.resource.data.name is string
+        && request.resource.data.category is string
+        && request.resource.data.status in ['active', 'archived']
+        && request.resource.data.processingEnabled is bool
+        && request.resource.data.confirmationStatus in ['confirmed', 'pending']
+        && request.resource.data.sourceLabel is string
+        && request.resource.data.confirmationNote is string
+        && (!('notes' in request.resource.data) || request.resource.data.notes is string)
+        && request.resource.data.updatedBy == request.auth.uid;
+      allow delete: if false;
+    }
+
+    match /stockVariants/{variantId} {
+      allow read: if canOperateInventory();
+      allow create, update: if canManageCatalog()
+        && request.resource.data.keys().hasOnly([
+          'id', 'itemId', 'processingState', 'stockForm', 'portionSizeLabel',
+          'balanceUnit', 'active', 'brand', 'packSize', 'purchaseUnit',
+          'purchaseToBalanceFactor', 'reorderThreshold', 'createdAt', 'createdBy',
+          'updatedAt', 'updatedBy'
+        ])
+        && request.resource.data.keys().hasAll([
+          'id',
+          'itemId',
+          'processingState',
+          'stockForm',
+          'portionSizeLabel',
+          'balanceUnit',
+          'active'
+        ])
+        && request.resource.data.id == variantId
+        && request.resource.data.itemId is string
+        && request.resource.data.processingState is string
+        && request.resource.data.stockForm is string
+        && request.resource.data.portionSizeLabel is string
+        && request.resource.data.balanceUnit is string
+        && request.resource.data.active is bool
+        && request.resource.data.updatedBy == request.auth.uid
+        && (!('purchaseToBalanceFactor' in request.resource.data)
+          || (request.resource.data.purchaseToBalanceFactor is number
+            && request.resource.data.purchaseToBalanceFactor > 0))
+        && (!('reorderThreshold' in request.resource.data)
+          || (request.resource.data.reorderThreshold is number
+            && request.resource.data.reorderThreshold >= 0))
+        && getAfter(/databases/$(database)/documents/inventoryItems/$(request.resource.data.itemId)).data.id
+          == request.resource.data.itemId;
+      allow delete: if false;
+    }
+
+    match /locations/{locationId} {
+      allow read: if canOperateInventory();
+      allow create, update: if canManageCatalog()
+        && request.resource.data.keys().hasOnly(['id', 'name', 'kind', 'active', 'createdAt', 'createdBy'])
+        && request.resource.data.id == locationId
+        && request.resource.data.name is string
+        && request.resource.data.name.size() > 0
+        && request.resource.data.kind in ['storage', 'kitchen']
+        && request.resource.data.active is bool;
+      allow delete: if false;
+    }
+
+    match /batches/{batchId} {
+      allow read: if canOperateInventory();
+      allow create: if canOperateInventory()
+        && request.resource.data.keys().hasOnly([
+          'id', 'itemId', 'variantId', 'locationId', 'receivedAt', 'sourceOperationId',
+          'labelledExpiryDate', 'receiptCondition', 'conditionCheckedBy', 'conditionCheckedAt',
+          'latestCondition', 'latestConditionAt', 'latestConditionBy', 'createdAt', 'createdBy'
+        ])
+        && request.resource.data.id == batchId
+        && request.resource.data.itemId is string
+        && request.resource.data.variantId is string
+        && request.resource.data.locationId is string
+        && request.resource.data.createdBy == request.auth.uid;
+      allow update: if canOperateInventory()
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly([
+          'latestCondition', 'latestConditionAt', 'latestConditionBy'
+        ]);
+      allow delete: if false;
+    }
+
+    match /stockOperations/{operationId} {
+      allow read: if canOperateInventory();
+      allow create: if canOperateInventory()
+        && request.resource.data.id == operationId
+        && request.resource.data.createdBy == request.auth.uid
+        && request.resource.data.status == 'posted'
+        && request.resource.data.lineCount is int
+        && request.resource.data.lineCount > 0
+        && request.resource.data.movementIds is list
+        && request.resource.data.movementIds.size() == request.resource.data.lineCount;
+      allow update, delete: if false;
+    }
+
+    match /importSessions/{sessionId} {
+      allow read: if canManageCatalog();
+      allow create: if canManageCatalog()
+        && request.resource.data.keys().hasOnly([
+          'id', 'type', 'sourceFileName', 'sourceRowCount', 'status',
+          'createdAt', 'createdBy', 'recordIds'
+        ])
+        && request.resource.data.id == sessionId
+        && request.resource.data.createdBy == request.auth.uid
+        && request.resource.data.status == 'committed'
+        && request.resource.data.type in ['catalog_items', 'catalog_variants']
+        && request.resource.data.sourceFileName is string
+        && request.resource.data.sourceRowCount is int
+        && request.resource.data.sourceRowCount > 0
+        && request.resource.data.sourceRowCount <= 400
+        && request.resource.data.recordIds is list
+        && request.resource.data.recordIds.size() == request.resource.data.sourceRowCount;
+      allow update, delete: if false;
+    }
+
+    match /stockMovements/{movementId} {
+      allow read: if canOperateInventory();
+      allow create: if canOperateInventory()
+        && request.resource.data.keys().hasAll([
+          'id',
+          'operationId',
+          'itemId',
+          'variantId',
+          'locationId',
+          'type',
+          'quantity',
+          'signedQuantity',
+          'unit',
+          'occurredAt',
+          'reason',
+          'reference',
+          'createdBy'
+        ])
+        && request.resource.data.itemId is string
+        && request.resource.data.variantId is string
+        && request.resource.data.locationId is string
+        && request.resource.data.operationId is string
+        && request.resource.data.type is string
+        && request.resource.data.quantity is number
+        && request.resource.data.quantity > 0
+        && request.resource.data.signedQuantity is number
+        && request.resource.data.unit is string
+        && request.resource.data.reason is string
+        && request.resource.data.reference is string
+        && request.resource.data.createdBy == request.auth.uid
+        && (!(request.resource.data.type in ['adjustment', 'reversal']) || canApprove());
+      allow update, delete: if false;
+    }
+
+    match /physicalCounts/{countId} {
+      allow read: if canOperateInventory();
+      allow create: if canOperateInventory()
+        && request.resource.data.id == countId
+        && request.resource.data.itemId is string
+        && request.resource.data.variantId is string
+        && request.resource.data.locationId is string
+        && request.resource.data.unit is string
+        && request.resource.data.expectedQuantityAtCount is number
+        && request.resource.data.observedQuantity is number
+        && request.resource.data.difference == request.resource.data.observedQuantity - request.resource.data.expectedQuantityAtCount
+        && request.resource.data.status in ['draft', 'observed']
+        && request.resource.data.countedBy == request.auth.uid;
+      allow update: if canApprove()
+        && resource.data.countedBy != request.auth.uid
+        && request.resource.data.diff(resource.data).affectedKeys()
+          .hasOnly(['status', 'approvedBy', 'approvedAt', 'notes', 'adjustmentMovementId', 'reconciledBy', 'reconciledAt', 'reconciliationReason'])
+        && request.resource.data.status in ['draft', 'observed', 'reconciled'];
+      allow delete: if false;
+    }
+
+    match /qualityChecks/{checkId} {
+      allow read: if canOperateInventory();
+      allow create: if canOperateInventory()
+        && request.resource.data.id == checkId
+        && request.resource.data.batchId is string
+        && request.resource.data.itemId is string
+        && request.resource.data.variantId is string
+        && request.resource.data.locationId is string
+        && request.resource.data.condition in ['Good', 'Needs review', 'Bad']
+        && request.resource.data.checkedBy == request.auth.uid;
+      allow update, delete: if false;
+    }
+
+    match /notifications/{notificationId} {
+      allow read: if canOperateInventory();
+      allow create: if canApprove();
+      allow update: if canOperateInventory()
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['readAt']);
+      allow delete: if false;
+    }
+
+    match /auditLogs/{auditId} {
+      allow read: if canApprove();
+      allow write: if false;
+    }
+
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

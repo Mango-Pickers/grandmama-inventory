@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 
-import { ModulePlaceholder } from "@/components/erp/module-placeholder";
+import { PhysicalCountPage } from "@/components/erp/physical-count-page";
 
 export const Route = createFileRoute("/_erp/physical-count")({
   head: () => ({
@@ -19,12 +19,5 @@ export const Route = createFileRoute("/_erp/physical-count")({
       { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
-  component: () => (
-    <ModulePlaceholder
-      icon="fact_check"
-      kicker="Operations Core"
-      title="Physical Count"
-      description="Weekly audit counts, scale cross-checks and discrepancy reconciliation."
-    />
-  ),
+  component: PhysicalCountPage,
 });

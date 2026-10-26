@@ -1,30 +1,13 @@
 import { createFileRoute } from "@tanstack/react-router";
 
-import { ModulePlaceholder } from "@/components/erp/module-placeholder";
+import { DailyStockPage } from "@/components/erp/daily-stock-page";
 
 export const Route = createFileRoute("/_erp/daily-stock")({
   head: () => ({
     meta: [
-      { title: "Daily Stock | Grandma's Kitchen Lagos Ops ERP" },
-      {
-        name: "description",
-        content: "Day-by-day stock intake, issue and wastage records for Grandma's Kitchen Lagos.",
-      },
-      { property: "og:title", content: "Daily Stock | Grandma's Kitchen Lagos Ops ERP" },
-      {
-        property: "og:description",
-        content: "Day-by-day stock intake, issue and wastage records for Grandma's Kitchen Lagos.",
-      },
-      { property: "og:type", content: "website" },
-      { name: "twitter:card", content: "summary_large_image" },
+      { title: "Daily Stock | My Grandma's Kitchen" },
+      { name: "description", content: "Ledger-derived stock for a selected day." },
     ],
   }),
-  component: () => (
-    <ModulePlaceholder
-      icon="calendar_today"
-      kicker="Operations Core"
-      title="Daily Stock"
-      description="Day-by-day stock intake, issue and wastage records across every storage unit and kitchen line."
-    />
-  ),
+  component: DailyStockPage,
 });
